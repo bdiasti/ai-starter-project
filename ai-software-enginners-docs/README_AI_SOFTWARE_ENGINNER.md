@@ -8,6 +8,11 @@ Este starter project tem como objetivo gerar documentação automatizada para di
 
 Cada papel desempenhará sua função específica dentro do projeto para resolver os requisitos apresentados.
 
+### **Gestor de Produto** - Minha documentação neste projeto
+- Definir a visão e estratégia do produto alinhadas com as necessidades do mercado.
+- Trabalhar com stakeholders para estabelecer prioridades e roadmap do produto.
+- Garantir que o desenvolvimento atenda às expectativas dos usuários e do negócio.
+
 ### **Product Owner (PO)** - Minha documentação neste projeto
 - Criar e detalhar os requisitos do sistema de forma clara e objetiva.
 - Escrever histórias de usuário bem definidas com critérios de aceitação.
@@ -17,6 +22,7 @@ Cada papel desempenhará sua função específica dentro do projeto para resolve
 - Definir a arquitetura do sistema, garantindo escalabilidade e boas práticas.
 - Criar diagramas UML para ilustrar a estrutura e a integração dos componentes.
 - Estabelecer diretrizes de desenvolvimento e padrões arquiteturais.
+- Criar/gerar digramas C4 que represente a arquitetura.
 
 ### **Gerente de Projetos** - Minha documentação neste projeto
 - Planejar e coordenar a execução do projeto garantindo cumprimento de prazos.
@@ -101,6 +107,7 @@ O **Cursor AI** será responsável por gerar automaticamente a documentação no
 - Cada papel desempenhe sua função específica para atender aos requisitos do projeto.
 - A arquitetura e design do software sejam bem definidos e documentados.
 - Diagramas em **PlantUML** ilustrem as interações entre os componentes e papéis.
+- Os digramas do arquiteto devem ser gerados usando C4
 - As melhores práticas de desenvolvimento e padrões sejam seguidos na documentação.
 - Cada papel deve ter um arquivo .md proprio com sua documentação neste projeto.
 

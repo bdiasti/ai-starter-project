@@ -1,137 +1,75 @@
 # Documentação do Arquiteto de Software
 
 ## Descrição do Papel
-O Arquiteto de Software é responsável por definir a estrutura técnica do sistema, garantindo escalabilidade, manutenibilidade e performance. No contexto deste projeto, o arquiteto define como a extensão Chrome, Flowise e Databricks se integrarão de forma eficiente.
+O Arquiteto de Software é responsável por definir a estrutura técnica do sistema, garantindo escalabilidade, manutenibilidade e performance através de decisões arquiteturais fundamentadas.
 
-## Execução das Responsabilidades no Projeto
+## Diagramas C4
 
-### 1. Arquitetura do Sistema
+### Nível 1: Diagrama de Contexto
 ```plantuml
-@startuml
-package "Frontend" {
-  [Extensão Chrome] as EC
-  [Interface do Usuário] as UI
-  [Gerenciador de Estado] as State
-}
+@startuml C4_Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-package "Backend" {
-  [Flowise API] as FA
-  [Processador de IA] as IA
-  [Cache] as Cache
-}
+Person(user, "Usuário", "Usuário da extensão Chrome")
+System(chromeExt, "Extensão Chrome", "Interface do usuário")
+System_Ext(flowise, "Flowise", "Sistema de Low-Code para IA")
+System_Ext(databricks, "Databricks", "Processamento de IA")
 
-package "Infraestrutura" {
-  [Databricks] as DB
-  [LLMs] as LLM
-}
-
-EC --> UI
-UI --> State
-EC --> FA
-FA --> Cache
-FA --> IA
-IA --> DB
-DB --> LLM
+Rel(user, chromeExt, "Usa")
+Rel(chromeExt, flowise, "Envia requisições", "REST API")
+Rel(flowise, databricks, "Processa chamadas LLM")
 @enduml
 ```
 
-### 2. Componentes Principais
-
-#### Extensão Chrome
-- Framework: React/TypeScript
-- Estado: Redux/Context API
-- Armazenamento: Chrome Storage API
-- Comunicação: REST API
-
-#### Flowise
-- Runtime: Node.js
-- API: REST com Express
-- Cache: Redis
-- Logging: Winston
-
-#### Databricks
-- Ambiente: ML Runtime
-- Modelos: PyTorch/TensorFlow
-- Escalabilidade: Auto Scaling
-- Monitoramento: Prometheus
-
-### 3. Padrões Arquiteturais
-
+### Nível 2: Diagrama de Contêiner
 ```plantuml
-@startuml
-package "Padrões de Design" {
-  [MVC] as mvc
-  [Observer] as obs
-  [Factory] as fac
-  [Strategy] as str
-}
+@startuml C4_Container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-package "Padrões Arquiteturais" {
-  [Microserviços] as micro
-  [Event-Driven] as event
-  [Cache-Aside] as cache
-  [Circuit Breaker] as cb
-}
+Container(frontend, "Frontend", "JavaScript", "Interface da extensão")
+Container(backend, "Backend", "Node.js", "Lógica de negócios")
+Container(api, "API Gateway", "REST", "Interface de comunicação")
+ContainerDb(db, "Database", "PostgreSQL", "Armazenamento de dados")
 
-mvc --> micro
-obs --> event
-fac --> cache
-str --> cb
+Rel(frontend, api, "Usa", "HTTPS")
+Rel(api, backend, "Roteia requisições")
+Rel(backend, db, "Lê/Escreve")
 @enduml
 ```
 
-### 4. Fluxo de Dados
-```plantuml
-@startuml
-participant "Extensão Chrome" as EC
-participant "Flowise" as FW
-participant "Cache" as Cache
-participant "Databricks" as DB
-participant "LLM" as LLM
+## Decisões Arquiteturais
 
-EC -> FW: Requisição
-FW -> Cache: Verifica Cache
-Cache --> FW: Cache Hit/Miss
-FW -> DB: Processa IA
-DB -> LLM: Executa Modelo
-LLM --> DB: Resultado
-DB --> FW: Resposta
-FW -> Cache: Atualiza Cache
-FW --> EC: Retorna Resultado
-@enduml
-```
+### Padrões Arquiteturais
+- Arquitetura em camadas
+- Microsserviços para componentes principais
+- Event-driven para comunicação assíncrona
 
-## Decisões Técnicas
+### Tecnologias Escolhidas
+- Frontend: JavaScript/TypeScript
+- Backend: Node.js
+- Database: PostgreSQL
+- Message Broker: RabbitMQ
 
-### 1. Segurança
-- Autenticação: JWT
-- HTTPS obrigatório
-- Rate Limiting
-- Sanitização de inputs
-- Criptografia em trânsito
+### Requisitos Não-Funcionais
+- Escalabilidade horizontal
+- Latência máxima de 200ms
+- 99.9% de disponibilidade
+- Segurança em conformidade com GDPR
 
-### 2. Performance
-- Lazy Loading
-- Compressão de dados
-- Cache em múltiplas camadas
-- Otimização de assets
+## Documentação Técnica
+- APIs REST documentadas com OpenAPI/Swagger
+- Diagramas de sequência para fluxos principais
+- Documentação de deployment e configuração
+- Guias de desenvolvimento e padrões de código
 
-### 3. Escalabilidade
-- Arquitetura stateless
-- Load balancing
-- Auto-scaling
-- Particionamento de dados
+## Monitoramento e Observabilidade
+- Logs centralizados com ELK Stack
+- Métricas de performance com Prometheus
+- Tracing distribuído com Jaeger
+- Dashboards de monitoramento com Grafana
 
-## Principais Entregáveis
-1. Documentação da arquitetura
-2. Diagramas técnicos
-3. Guias de implementação
-4. Padrões de código
-5. Requisitos não-funcionais
-
-## Métricas Técnicas
-- Tempo de resposta
-- Throughput
-- Taxa de erro
-- Uso de recursos
-- Disponibilidade do sistema 
+## Segurança
+- Autenticação via OAuth 2.0
+- Comunicação criptografada (HTTPS)
+- Proteção contra ataques comuns (XSS, CSRF)
+- Validação de entrada em todas as APIs 
